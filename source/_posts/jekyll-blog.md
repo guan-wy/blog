@@ -1,5 +1,6 @@
 ---
-title:  "来自 Jekyll + GitHub 的博客"
+title: 来自 Jekyll + GitHub 的博客
+date: 2016/4/6 00:00:00
 categories: [Technical notes]
 tag: [GitHub, Blog, Jekyll]
 ---

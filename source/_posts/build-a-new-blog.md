@@ -1,5 +1,6 @@
 ---
 title: Do you wanna build a new blog?
+date: 2016/4/9 00:00:00
 categories: [Technical notes]
 tag: [GitHub, Blog, Hexo]
 ---
