@@ -52,3 +52,9 @@ gulp.task('deploy', function() {
 9. 运行 `npm run deploy` 直接部署。
 
 10. Good! （强行满十条）
+
+---
+
+![灵异事件之一 断了的分支](http://7xso7u.com2.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-12%2020.40.21.png)
+
+![灵异事件之二 奇怪的文件夹](http://7xso7u.com2.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-12%2020.41.01.png)
