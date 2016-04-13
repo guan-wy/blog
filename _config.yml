@@ -73,3 +73,9 @@ theme: maupassant
 #   type: git
 #   repo: https://github.com/guan-wy/blog
 #   branch: gh-pages
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
