@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>硫酸</title>
+  <subtitle>一小瓶浓硫酸的博客</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.h2so4.me/"/>
+  <updated>2016-04-12T12:45:14.000Z</updated>
+  <id>http://blog.h2so4.me/</id>
+  
+  <author>
+    <name>wenyan</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Setting up a custom domain for blog</title>
+    <link href="http://blog.h2so4.me/2016/04/12/github-pages-domain/"/>
+    <id>http://blog.h2so4.me/2016/04/12/github-pages-domain/</id>
+    <published>2016-04-12T12:00:00.000Z</published>
+    <updated>2016-04-12T12:45:14.000Z</updated>
+    
+    <content type="html">&lt;p&gt;为博客建个自己的域名，以这次博客为例，同样也适用于其他的项目。最开始部署用的是 &lt;a href=&quot;https://github.com/hexojs/hexo-deployer-git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;插件 hexo-deployer-git&lt;/a&gt;，但是发现每次都得输入 github username &amp;amp; password，有点儿烦就改用 &lt;a href=&quot;https://github.com/shinnn/gulp-gh-pages&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gulp-gh-pages&lt;/a&gt; 了。下面列下实际步骤。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;执行 &lt;code&gt;$ hexo generate&lt;/code&gt;，会在项目根目录生成一个名为 public 的文件夹，里面就生成的所有静态文件了。 &lt;a href=&quot;https://hexo.io/zh-cn/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档参考&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在 GitHub Repo 中新建一个 &lt;code&gt;gh-pages&lt;/code&gt; 分支&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在根目录 source 里面新建一个文件 &lt;code&gt;CNAME&lt;/code&gt;，里面写上自定义的域名，比如 &lt;code&gt;blog.h2so4.me&lt;/code&gt;。（先想清楚是要顶级域名还是二级域名，涉及到配置文件的改动）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;修改 &lt;code&gt;_config.yml&lt;/code&gt; 里面的 url 和 root。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;url: http://blog.h2so4.me&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;root: /&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在命令行里输入 &lt;code&gt;dig YOUR-USERNAME.github.io +nostats +nocomments +nocmd&lt;/code&gt;。&lt;br&gt;里面的 YOUR-USERNAME 是 GitHub 用户名，运行完了可以看到：&lt;br&gt;&lt;code&gt;&amp;gt; YOUR-USERNAME.github.io     3600    CNAME    github.map.fastly.net.&lt;/code&gt;&lt;br&gt;为自定义域名添加一条 A 纪录&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Type: CNAME&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Host: blog.h2so4.me&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Answer: github.map.fastly.net&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;安装 &lt;a href=&quot;https://github.com/shinnn/gulp-gh-pages&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gulp-gh-pages&lt;/a&gt;  &lt;code&gt;npm install --save-dev gulp-gh-pages&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;新建 &lt;code&gt;gulpfile.js&lt;/code&gt; 文件，其中 public 就是存放静态文件的地方。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;var gulp = require(&amp;apos;gulp&amp;apos;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;var ghPages = require(&amp;apos;gulp-gh-pages&amp;apos;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;gulp.task(&amp;apos;deploy&amp;apos;, function() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  return gulp.src(&amp;apos;./public/**/*&amp;apos;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    .pipe(ghPages());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为了部署方便，在 package.json 里面加上 scripts 合并两条命令。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;quot;scripts&amp;quot;: &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;quot;deploy&amp;quot;: &amp;quot;hexo generate &amp;amp;&amp;amp; gulp deploy&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;运行 &lt;code&gt;npm run deploy&lt;/code&gt; 直接部署。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Good! （强行满十条）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xso7u.com2.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-12%2020.40.21.png&quot; alt=&quot;灵异事件之一 断了的分支&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xso7u.com2.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-12%2020.41.01.png&quot; alt=&quot;灵异事件之二 奇怪的文件夹&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为博客建个自己的域名，以这次博客为例，同样也适用于其他的项目。最开始部署用的是 &lt;a href=&quot;https://github.com/hexojs/hexo-deployer-git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;插件 hexo-depl
+    
+    </summary>
+    
+      <category term="Technical notes" scheme="http://blog.h2so4.me/categories/Technical-notes/"/>
+    
+    
+      <category term="GitHub" scheme="http://blog.h2so4.me/tags/GitHub/"/>
+    
+      <category term="Blog" scheme="http://blog.h2so4.me/tags/Blog/"/>
+    
+      <category term="Hexo" scheme="http://blog.h2so4.me/tags/Hexo/"/>
+    
+      <category term="Domain" scheme="http://blog.h2so4.me/tags/Domain/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Do you wanna build a new blog?</title>
+    <link href="http://blog.h2so4.me/2016/04/09/build-a-new-blog/"/>
+    <id>http://blog.h2so4.me/2016/04/09/build-a-new-blog/</id>
+    <published>2016-04-08T16:00:00.000Z</published>
+    <updated>2016-04-12T12:30:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;关于 WordPress， Jekyll， FarBox，Hexo 这四个博客框架优缺点的对比，所有看法偏个人。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Do you wanna build a snowman?&lt;br&gt;Come on let’s go and play!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;http://music.163.com/outchain/player?type=2&amp;id=28031114&amp;auto=0&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;h2 id=&quot;About-WordPress-Jekyll-FarBox-Hexo&quot;&gt;&lt;a href=&quot;#About-WordPress-Jekyll-FarBox-Hexo&quot; class=&quot;headerlink&quot; title=&quot;About WordPress, Jekyll, FarBox, Hexo&quot;&gt;&lt;/a&gt;About WordPress, Jekyll, FarBox, Hexo&lt;/h2&gt;&lt;h3 id=&quot;WordPress&quot;&gt;&lt;a href=&quot;#WordPress&quot; class=&quot;headerlink&quot; title=&quot;WordPress&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://en.wordpress.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;WordPress&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt; 优点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有眼花缭乱的主题&lt;/li&gt;
+&lt;li&gt;各种神一般的插件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 缺点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人建站很多功能不是很需要&lt;/li&gt;
+&lt;li&gt;神烦更新 Badge&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Jekyll&quot;&gt;&lt;a href=&quot;#Jekyll&quot; class=&quot;headerlink&quot; title=&quot;Jekyll&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://jekyllrb.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jekyll&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Octopress 和 Jekyll 类似&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt; 优点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;够够够简单&lt;/li&gt;
+&lt;li&gt;支持 Markdown&lt;/li&gt;
+&lt;li&gt;配合 GitHub Pages 食用，风味更佳&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 缺点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 GitHub 上有些插件基本不能用（也有可能有其他方法）&lt;/li&gt;
+&lt;li&gt;很多类似分类页、便签页、分页功能都需要自己另外加&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;FarBox&quot;&gt;&lt;a href=&quot;#FarBox&quot; class=&quot;headerlink&quot; title=&quot;FarBox&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.farbox.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;FarBox&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt; 优点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;能接入微信，随时随地写作&lt;/li&gt;
+&lt;li&gt;能 Dropbox，支持 Dropbox 的写作APP，都可以用来在 FarBox 上发表文章。&lt;/li&gt;
+&lt;li&gt;支持多种客户端在线编辑 Markdown&lt;/li&gt;
+&lt;li&gt;支持部分编程语言的代码高亮实时提示和自动刷新&lt;/li&gt;
+&lt;li&gt;模版自定义，还有针对性的提供了常用的特殊页面（个人简历、商品介绍、ppt）&lt;/li&gt;
+&lt;li&gt;上手指南很详细&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 缺点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;收费（价格还行，不算缺点）&lt;/li&gt;
+&lt;li&gt;他们家官网真的可以逼死我！！！（一口老血）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Hexo&quot;&gt;&lt;a href=&quot;#Hexo&quot; class=&quot;headerlink&quot; title=&quot;Hexo&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt; 优点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Node.js&lt;/li&gt;
+&lt;li&gt;使用文档写的太棒了，官网真好看&lt;/li&gt;
+&lt;li&gt;自带国际化（i18n）光环&lt;/li&gt;
+&lt;li&gt;支持 Markdown，一条指令便部署到 GitHub Pages&lt;/li&gt;
+&lt;li&gt;文件夹 themes 支持多套主题，官网上也有很多主题可以参考学习&lt;/li&gt;
+&lt;li&gt;拥有很多实用插件，支持其他语言，比如 Jade 或者 CoffeeScript ，另外还可以用直观的文章编辑界面 hexo-admin&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt; 缺点 &lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;暂时没发现缺点（任性 :D）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;感谢看到最后，另外卖个安利 &lt;a href=&quot;https://about.me/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://about.me/&lt;/a&gt;，可以当成引导页，而且有很多应用场景。你可以做成个人介绍的页面，可以是邀请观看自己博客的页面，也可以是求职页面，更或者是约约约的页面23333。总之还挺不错，但是没法自定义主题，如果喜欢的话可以单独照着自己写一个。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;关于 WordPress， Jekyll， FarBox，Hexo 这四个博客框架优缺点的对比，所有看法偏个人。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Do you wanna build a snowman?&lt;br&gt;Come on let’s go and play!&lt;
+    
+    </summary>
+    
+      <category term="Technical notes" scheme="http://blog.h2so4.me/categories/Technical-notes/"/>
+    
+    
+      <category term="GitHub" scheme="http://blog.h2so4.me/tags/GitHub/"/>
+    
+      <category term="Blog" scheme="http://blog.h2so4.me/tags/Blog/"/>
+    
+      <category term="Hexo" scheme="http://blog.h2so4.me/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>来自 Jekyll + GitHub 的博客</title>
+    <link href="http://blog.h2so4.me/2016/04/06/jekyll-blog/"/>
+    <id>http://blog.h2so4.me/2016/04/06/jekyll-blog/</id>
+    <published>2016-04-05T16:00:00.000Z</published>
+    <updated>2016-04-12T12:30:51.000Z</updated>
+    
+    <content type="html">&lt;p&gt;本篇用最通俗易懂的方法介绍如何用 Jekyll 和 GitHub 搭建一个简单小巧的个人博客。&lt;/p&gt;
+&lt;p&gt;其实想开博客的想法存了有一两年了，我其实不是很擅长写文章，就连流水账到最后也坚持不下来。前期入过手账坑，一股脑儿地买过好多胶带和贴纸。手账断更之后，因为在工作中为公司的博客写过 wordpress 主题，所以有打算用 wordpress 自己设计一套主题，可是万万没想到，等我做完项目我就再也不想看到 wordpress 了（原因自行脑补）。最后打算用 Jekyll 主要因为支持 markdown 和 Sass 并且真的很简单，而且通过 GitHub 管理也很方便。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Prepare&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;创建步骤、介绍、文件结构就不列了，附上 &lt;a href=&quot;http://jekyllrb.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jekyll&lt;/a&gt; 和 &lt;a href=&quot;https://pages.github.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub Pages&lt;/a&gt; 官网链接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;_config.yml&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;配置文件中主要包含这么几大部分：博客信息、个人信息、菜单配置、社交信息、菜单配置、路由信息和一些其他的配置（根据实际情况取舍）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Category &amp;amp; Tag&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先保证 &lt;code&gt;_posts&lt;/code&gt; 中的文章有类别 categories 和 tag 属性，如果有多个属性或者标签写成 &lt;code&gt;tag: [jekyll, blog]&lt;/code&gt; 的形式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在 &lt;code&gt;_layouts&lt;/code&gt; 中添加两个模版文件，分别为：&lt;code&gt;blog_by_category.html&lt;/code&gt; 和 &lt;code&gt;blog_by_tag.html&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在博客项目的根目录下新建一个文件夹叫做 &lt;code&gt;blog&lt;/code&gt;，包含 &lt;code&gt;category&lt;/code&gt; 和 &lt;code&gt;tag&lt;/code&gt;两个子文件夹。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对应分类与标签页的路由：&lt;code&gt;blog/category/jekyll/&lt;/code&gt;、&lt;code&gt;blog/tag/jekyll/&lt;/code&gt;，每个分类和标签页都生成了单独的静态页面。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在首页中显示分类信息和标签内容：(去掉%前面的/)，具体内容可以在项目里面看到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Comment&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;先通过 &lt;a href=&quot;https://disqus.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DISQUS&lt;/a&gt; 注册账号，然后在 &lt;code&gt;post.html&lt;/code&gt; 模版对下面加上这么一段代码：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;div id=&amp;quot;disqus_thread&amp;quot;&amp;gt; &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        var disqus_shortname = &amp;apos;cenalulu&amp;apos;; // required: replace example with your forum shortname&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        /* * * DON&amp;apos;T EDIT BELOW THIS LINE * * */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        (function() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            var dsq = document.createElement(&amp;apos;script&amp;apos;); dsq.type = &amp;apos;text/javascript&amp;apos;; dsq.async = true;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            dsq.src = &amp;apos;//&amp;apos; + disqus_shortname + &amp;apos;.disqus.com/embed.js&amp;apos;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            (document.getElementsByTagName(&amp;apos;head&amp;apos;)[0] || document.getElementsByTagName(&amp;apos;body&amp;apos;)[0]).appendChild(dsq);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;)();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/script&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;noscript&amp;gt;Please enable JavaScript to view the &amp;lt;a href=&amp;quot;http://disqus.com/?ref_noscript&amp;quot;&amp;gt;comments powered by Disqus.&amp;lt;/a&amp;gt;&amp;lt;/noscript&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不同的日期格式： &lt;code&gt;page.date | 替换部分&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date_to_string&lt;/code&gt;: 05 Apr 2016&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date_to_long_string&lt;/code&gt;: 05 April 2016&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date: &amp;quot;%b %-d, %Y&amp;quot;&lt;/code&gt;: Apr 5, 2016&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date:&amp;quot;%B %d, %Y&amp;quot;&lt;/code&gt;: April 05, 2016&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date: &amp;quot;%Y-%m-%d&amp;quot;&lt;/code&gt;: 2016-04-05&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date: &amp;quot;%m/%d/%Y&amp;quot;&lt;/code&gt;: 04/05/2016&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;date: &amp;quot;%-m/%-d/%Y&amp;quot;&lt;/code&gt;: 4/5/2016&lt;/p&gt;
+&lt;p&gt;这里只列了几种常用的，其他更多的日期格式可以参考 &lt;a href=&quot;http://alanwsmith.com/jekyll-liquid-date-formatting-examples&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jekyll Date Formatting Examples&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Theme&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本博客的主题的主题色是：&lt;span style=&quot;display: inline-block; width: 12px; height: 12px; background-color: #92b34c;&quot;&gt;&lt;/span&gt; #92b34c &lt;span style=&quot;display: inline-block; width: 12px; height: 12px; background-color: rgba(146, 179, 76, .6); margin-left: 20px;&quot;&gt;&lt;/span&gt; 60%  &lt;span style=&quot;display: inline-block; width: 12px; height: 12px; background-color: rgba(146, 179, 76, .2); margin-left: 20px;&quot;&gt;&lt;/span&gt; 20%&lt;/p&gt;
+&lt;p&gt;Markdown 的样式参考 &lt;a href=&quot;https://github.com/sindresorhus/github-markdown-css&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;sindresorhus/github-markdown-css&lt;/a&gt;，在此基础之上做了一些调整。&lt;/p&gt;
+&lt;p&gt;写这篇文章的时候我猛然发现我的设计稿已经不见了……肯定被我清文件的时候误丢到垃圾桶里了！！！&lt;/p&gt;
+&lt;p&gt; (╯°□°）╯︵ ┻━┻&lt;/p&gt;
+&lt;p&gt;不过没事，我还有仅存的两张 jpg（捂胸口&lt;/p&gt;
+&lt;p&gt;在搭建博客之前没有考虑 markdown 的主要标签的样式，所以建议大家先搭再设计。&lt;/p&gt;
+&lt;p&gt;ps: (这里放第一版的设计图，完成日期：2016年3月3日)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xso7u.com2.z0.glb.clouddn.com/Blog%20Post%20.jpg&quot; alt=&quot;博客文章内页&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xso7u.com2.z0.glb.clouddn.com/Blog%20Index%203.13%2018:00.jpg&quot; alt=&quot;博客首页&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;变幻莫测的人生啊&quot;&gt;&lt;a href=&quot;#变幻莫测的人生啊&quot; class=&quot;headerlink&quot; title=&quot;变幻莫测的人生啊&quot;&gt;&lt;/a&gt;变幻莫测的人生啊&lt;/h3&gt;&lt;p&gt;6号下午决定不用 Jekyll 了，因为我突然发现有比 Jekyll 更好的了。。。（我真的不是善变&lt;/p&gt;
+&lt;p&gt;但是之前写的这篇文章，源文件（半成品）还是决定挂出来，不知道能不能有帮助？&lt;/p&gt;
+&lt;p&gt;另外这个设计的主题有喜欢的就拿去用吧 :D&lt;/p&gt;
+&lt;h3 id=&quot;DISQUS-的坑&quot;&gt;&lt;a href=&quot;#DISQUS-的坑&quot; class=&quot;headerlink&quot; title=&quot;DISQUS 的坑&quot;&gt;&lt;/a&gt;DISQUS 的坑&lt;/h3&gt;&lt;p&gt;关于 DISQUS 的 shortname，shortname 和 name 和 username 都不一样！！！都不一样！！！都不一样！！！&lt;/p&gt;
+&lt;p&gt;只简单注册完了的用户，在右上角头像处可以看到有一个 Add Disqus to Site，需要走完所有流程，这里设置的 shortname 才是需要。&lt;/p&gt;
+&lt;p&gt;Site 建成功后，右上角菜单里才有 Admin 这个选项。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;var disqus_shortname = &amp;apos;h2so4&amp;apos;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇用最通俗易懂的方法介绍如何用 Jekyll 和 GitHub 搭建一个简单小巧的个人博客。&lt;/p&gt;
+&lt;p&gt;其实想开博客的想法存了有一两年了，我其实不是很擅长写文章，就连流水账到最后也坚持不下来。前期入过手账坑，一股脑儿地买过好多胶带和贴纸。手账断更之后，因为在工作中为公
+    
+    </summary>
+    
+      <category term="Technical notes" scheme="http://blog.h2so4.me/categories/Technical-notes/"/>
+    
+    
+      <category term="GitHub" scheme="http://blog.h2so4.me/tags/GitHub/"/>
+    
+      <category term="Blog" scheme="http://blog.h2so4.me/tags/Blog/"/>
+    
+      <category term="Jekyll" scheme="http://blog.h2so4.me/tags/Jekyll/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://blog.h2so4.me/2016/04/05/hello-world/"/>
+    <id>http://blog.h2so4.me/2016/04/05/hello-world/</id>
+    <published>2016-04-04T16:00:00.000Z</published>
+    <updated>2016-04-12T12:30:48.000Z</updated>
+    
+    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
