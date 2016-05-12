@@ -15,6 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 'Security' 改的有关安全相关bug
 ```
 
+## [0.0.4] - 2016-05-12
+### Added
+- Update font family.
+
 ## [0.0.3] - 2016-04-13
 ### Added
 - This changelog file to record the blog updates.
