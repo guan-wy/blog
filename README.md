@@ -2,8 +2,13 @@
 
 ### 硫酸
 
-部署
+运行
+``` bash
+$ hexo server
 ```
+
+部署
+``` bash
 npm run deploy
 ```
 
